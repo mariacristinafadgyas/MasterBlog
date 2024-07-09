@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from storage import *
 
 app = Flask(__name__)
@@ -10,6 +10,29 @@ def index():
      file which is read in the storage file"""
     blog_posts = read_data('blog_data.json')
     return render_template('index.html', posts=blog_posts)
+
+
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    blog_posts = read_data('blog_data.json')
+    if request.method == 'POST':
+        if blog_posts:
+            new_id = max(post['id'] for post in blog_posts) + 1
+        else:
+            new_id = 1
+        title = request.form.get('title')
+        author = request.form.get('author')
+        content = request.form.get('content')
+        new_post = {
+            'id': new_id,
+            'author': author,
+            'title': title,
+            'content': content
+        }
+        blog_posts.append(new_post)
+        sync_data('blog_data.json', blog_posts)
+        return redirect(url_for('index'))
+    return render_template('add.html')
 
 
 if __name__ == '__main__':
