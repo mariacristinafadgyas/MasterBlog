@@ -13,6 +13,26 @@ def sync_data(file_path, blog_data):
         fileobj.write(updated_blog)
 
 
+def fetch_post_by_id(file_path, post_id):
+    blog_data = read_data(file_path)
+    for post in blog_data:
+        if post['id'] == post_id:
+            return post
+    return None
+
+
+def update_post_in_json(file_path, updated_post):
+    blog_data = read_data(file_path)
+    for post in blog_data:
+        if post['id'] == updated_post['id']:
+            post['title'] = updated_post['title']
+            post['author'] = updated_post['author']
+            post['content'] = updated_post['content']
+            break
+
+    sync_data('blog_data.json', blog_data)
+
+
 def main():
     blog_data = read_data('blog_data.json')
     new_data = {
@@ -23,6 +43,7 @@ def main():
     }
     blog_data.append(new_data)
     sync_data('blog_data.json', blog_data)
+    # print(fetch_post_by_id('blog_data.json', 3))
 
 
 if __name__ == "__main__":

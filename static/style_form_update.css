@@ -15,7 +15,6 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
     text-align: center;
-}
 
 h1 {
     color: #4F4F4F;
@@ -42,7 +41,7 @@ form input[type="text"] {
 }
 
 form input[type="submit"] {
-    background-color: #28a745;
+    background-color: #17a2b8;
     color: white;
     padding: 10px 15px;
     border: none;
@@ -52,5 +51,5 @@ form input[type="submit"] {
 }
 
 form input[type="submit"]:hover {
-    background-color: #218838;
+    background-color: #138496;
 }
