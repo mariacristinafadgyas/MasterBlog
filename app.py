@@ -84,5 +84,23 @@ def update(post_id):
     return render_template('update.html', post=post)
 
 
+@app.route('/like/<int:post_id>', methods=['POST'])
+def like_post(post_id):
+    post = fetch_post_by_id('blog_data.json',post_id)
+    if post:
+        likes = post['likes'] + 1
+        liked_post = {
+            'id': post_id,
+            'author': post['author'],
+            'title': post['title'],
+            'content': post['content'],
+            'likes': likes
+        }
+        post.update(liked_post)
+        update_post_in_json('blog_data.json', liked_post)
+        return redirect(url_for('index'))
+    return "Post not found", 404
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)

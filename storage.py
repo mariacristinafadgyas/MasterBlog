@@ -28,6 +28,7 @@ def update_post_in_json(file_path, updated_post):
             post['title'] = updated_post['title']
             post['author'] = updated_post['author']
             post['content'] = updated_post['content']
+            post['likes'] = updated_post['likes']
             break
 
     sync_data('blog_data.json', blog_data)

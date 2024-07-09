@@ -88,3 +88,37 @@ h1 {
     background-color: #138496; /* Darker shade on hover */
 }
 
+.like-button {
+    display: inline-block;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #FFF;
+    background-color: #FFF;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+}
+
+.like-button:hover {
+    background-color: #e9f1f2;
+}
+
+.like-button i {
+    margin-right: 3px;
+}
+
+.like-count {
+    font-size: 3px;
+    margin-left: 5px;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 10px;
+}
