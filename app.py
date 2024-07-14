@@ -14,6 +14,10 @@ def index():
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
+    """Handles the creation of a new post. GET method: Renders the template
+     "add.html" to display the form for adding a new blog post. POST method:
+     Processes the form data to create a new post and redirects to the
+      start page."""
     blog_posts = read_data('blog_data.json')
     if request.method == 'POST':
         if blog_posts:
@@ -23,11 +27,13 @@ def add():
         title = request.form.get('title')
         author = request.form.get('author')
         content = request.form.get('content')
+        likes = request.form.get('likes', 0)
         new_post = {
             'id': new_id,
             'author': author,
             'title': title,
-            'content': content
+            'content': content,
+            'likes': likes
         }
         blog_posts.append(new_post)
         sync_data('blog_data.json', blog_posts)
@@ -35,8 +41,9 @@ def add():
     return render_template('add.html')
 
 
-@app.route('/delete/<int:post_id>', methods=['GET', 'POST'])
+@app.route('/delete/<int:post_id>', methods=['GET'])
 def delete_post(post_id):
+    """Handles the deletion of a blog post and redirects to the start page."""
     blog_posts = read_data('blog_data.json')
     for post in blog_posts:
         if post['id'] == post_id:
@@ -49,14 +56,15 @@ def delete_post(post_id):
 
 @app.route('/update/<int:post_id>', methods=['GET', 'POST'])
 def update(post_id):
-    # Fetch the blog posts from the JSON file
-    post = fetch_post_by_id('blog_data.json', post_id)
+    """Update an existing blog post with new title, author, or content.
+    Redirect to the home page after updating."""
+    post = fetch_post_by_id('blog_data.json', post_id)  # Fetch the blog posts from the JSON file
     if post is None:
         return "Post not found", 404
 
     if request.method == 'POST':
         title = request.form.get('title')
-        if title is None: # If no new info is provided then keep the previous
+        if title is None:  # If no new info is provided then keep the previous
             title = post['title']
         else:
             title = title
@@ -74,7 +82,8 @@ def update(post_id):
             'id': post_id,
             'author': author,
             'title': title,
-            'content': content
+            'content': content,
+            'likes': post['likes']
         }
         post.update(updated_post)
         update_post_in_json('blog_data.json', updated_post)
@@ -86,7 +95,9 @@ def update(post_id):
 
 @app.route('/like/<int:post_id>', methods=['POST'])
 def like_post(post_id):
-    post = fetch_post_by_id('blog_data.json',post_id)
+    """Increments likes for the specified post and updates 'blog_data.json'.
+    Redirects to the index page or returns a 404 if the post is not found."""
+    post = fetch_post_by_id('blog_data.json', post_id)
     if post:
         likes = post['likes'] + 1
         liked_post = {

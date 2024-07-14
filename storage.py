@@ -2,18 +2,21 @@ import json
 
 
 def read_data(file_path):
+    """Reads the JSON file"""
     with open(file_path, 'r') as fileobj:
         blog_data = json.load(fileobj)
         return blog_data
 
 
 def sync_data(file_path, blog_data):
+    """Synchronizes the JSON file"""
     updated_blog = json.dumps(blog_data)
     with open(file_path, 'w') as fileobj:
         fileobj.write(updated_blog)
 
 
 def fetch_post_by_id(file_path, post_id):
+    """Fetches the post by id"""
     blog_data = read_data(file_path)
     for post in blog_data:
         if post['id'] == post_id:
@@ -22,6 +25,7 @@ def fetch_post_by_id(file_path, post_id):
 
 
 def update_post_in_json(file_path, updated_post):
+    """Updates the post in the JSON file"""
     blog_data = read_data(file_path)
     for post in blog_data:
         if post['id'] == updated_post['id']:
